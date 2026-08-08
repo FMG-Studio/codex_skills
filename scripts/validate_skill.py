@@ -60,7 +60,7 @@ for term in required_skill_terms:
         fail(f"missing behavioral or safety boundary: {term}")
 
 acceptance_text = ACCEPTANCE.read_text(encoding="utf-8")
-for fixture in ("Normal supportive conversation", "Possible overload", "Emotion wheel", "Medication boundary", "Imminent suicide risk", "Incomplete information", "Relationship conflict", "Acute intoxication or medication reaction", "Immediate interpersonal danger", "Possible psychosis or mania", "Credible threat toward another person", "Basic needs failure", "Local lookup unavailable", "Multiple simultaneous risks", "Hidden cost of outward competence", "Unmasking remains contextual and safe", "Early overload signals are not a diagnostic checklist", "Demand avoidance is formulated, not diagnosed", "Autonomy support is not covert control", "Self-assessment is substantive but non-diagnostic", "Screening scores do not collapse the differential", "Diagnostic invalidation is reviewed without reverse-diagnosing", "Reduced communication during overload gets an access plan", "Double empathy is a bounded interaction lens", "Autism and OCD are differentiated by function, not appearance"):
+for fixture in ("Normal supportive conversation", "Possible overload", "Emotion wheel", "Medication boundary", "Imminent suicide risk", "Incomplete information", "Relationship conflict", "Acute intoxication or medication reaction", "Immediate interpersonal danger", "Possible psychosis or mania", "Credible threat toward another person", "Basic needs failure", "Local lookup unavailable", "Multiple simultaneous risks", "Hidden cost of outward competence", "Unmasking remains contextual and safe", "Early overload signals are not a diagnostic checklist", "Demand avoidance is formulated, not diagnosed", "Autonomy support is not covert control", "Self-assessment is substantive but non-diagnostic", "Screening scores do not collapse the differential", "Diagnostic invalidation is reviewed without reverse-diagnosing", "Reduced communication during overload gets an access plan", "Double empathy is a bounded interaction lens", "Autism and OCD are differentiated by function, not appearance", "Biomedical autism claims are evidence-checked without dismissing symptoms"):
     if fixture not in acceptance_text:
         fail(f"missing acceptance fixture: {fixture}")
 
@@ -82,8 +82,8 @@ expected_hashes = {
 if record.get("artifact_sha256") != expected_hashes:
     fail("acceptance record hashes must match the exact reviewed runtime artifacts")
 cases = record.get("cases", [])
-if len(cases) != 25 or {case.get("id") for case in cases} != set("ABCDEFGHIJKLMNOPQRSTUVWXY"):
-    fail("acceptance record must contain exactly fixtures A through Y")
+if len(cases) != 26 or {case.get("id") for case in cases} != set("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+    fail("acceptance record must contain exactly fixtures A through Z")
 if any(case.get("verdict") != "PASS" for case in cases):
     fail("every recorded behavioral fixture must pass")
 for case in cases:
@@ -109,7 +109,7 @@ if {item.get("id") for item in regressions} != {f"R{i}" for i in range(1, 10)} o
     fail("acceptance record must contain evidence for every regression check")
 
 response_regressions = record.get("response_regression_checks", [])
-expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c", "R10", "R11", "R12", "R13", "R14"}
+expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c", "R10", "R11", "R12", "R13", "R14", "R15"}
 if {item.get("id") for item in response_regressions} != expected_response_ids:
     fail("acceptance record must contain every response-level regression fixture")
 for item in response_regressions:
@@ -124,14 +124,14 @@ if any(consumer.get(field) != [] for field in required_empty_lists):
     fail("consumer audit must contain empty defect lists")
 if consumer.get("verdict") != "PASS" or consumer.get("reviewer") != "independent-artifact-only-consumer" or len(consumer.get("review_summary", "")) < 100:
     fail("consumer audit must contain a substantive independent PASS verdict")
-for inventory_marker in ("A-Y", "R14", "S37-S43", "forty-three source-applicability records"):
+for inventory_marker in ("A-Z", "R15", "S44-S54", "fifty-four source-applicability records"):
     if inventory_marker not in consumer.get("review_summary", ""):
         fail(f"consumer audit review_summary is stale or incomplete: missing {inventory_marker}")
 
 source_checks = record.get("source_verification", [])
-expected_source_ids = {f"S{i}" for i in range(1, 44)}
-if len(source_checks) != 43 or {item.get("id") for item in source_checks} != expected_source_ids:
-    fail("acceptance record must contain the exact S1-S43 source inventory")
+expected_source_ids = {f"S{i}" for i in range(1, 55)}
+if len(source_checks) != 54 or {item.get("id") for item in source_checks} != expected_source_ids:
+    fail("acceptance record must contain the exact S1-S54 source inventory")
 if any(item.get("status") != "VERIFIED" or not item.get("url") or not item.get("applicability") for item in source_checks):
     fail("acceptance record must preserve current verification and applicability for every evidence source")
 
