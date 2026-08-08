@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unreal 5 Game Developer"
+  short_description: "Build optimized UE5 gameplay for weak PCs"
+  default_prompt: "Use $unreal5-game-developer to implement and profile this Unreal Engine 5 feature for our low-end PC target."

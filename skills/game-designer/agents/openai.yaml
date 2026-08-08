@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Designer"
+  short_description: "Design testable, performant game systems"
+  default_prompt: "Use $game-designer to turn this game idea into a testable design with clear implementation and performance constraints."
