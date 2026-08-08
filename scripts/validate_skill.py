@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL_DIR = ROOT / "skills" / "audhd-consulting-psychologist"
 SKILL = SKILL_DIR / "SKILL.md"
 EVIDENCE = SKILL_DIR / "references" / "evidence-base.md"
+PRACTICE_CATALOG = SKILL_DIR / "references" / "practice-and-training-catalog.md"
 ACCEPTANCE = ROOT / "tests" / "audhd-consulting-psychologist.acceptance.md"
 RECORD = ROOT / "tests" / "audhd-consulting-psychologist.acceptance-record.json"
 INTERFACE = SKILL_DIR / "agents" / "openai.yaml"
@@ -21,7 +22,7 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-for required in (ROOT / "README.md", SKILL, EVIDENCE, INTERFACE, ACCEPTANCE, RECORD):
+for required in (ROOT / "README.md", SKILL, EVIDENCE, PRACTICE_CATALOG, INTERFACE, ACCEPTANCE, RECORD):
     if not required.is_file():
         fail(f"missing required file: {required.relative_to(ROOT)}")
     if not required.read_text(encoding="utf-8").strip():
@@ -46,6 +47,7 @@ required_skill_terms = (
     "diagnose",
     "medication",
     "evidence-base.md",
+    "practice-and-training-catalog.md",
     "Plutchik",
     "direct adult AuDHD intervention evidence remains limited",
     "credible imminent violence",
@@ -64,7 +66,7 @@ for fixture in ("Normal supportive conversation", "Possible overload", "Emotion 
     if fixture not in acceptance_text:
         fail(f"missing acceptance fixture: {fixture}")
 
-for path in (SKILL, EVIDENCE):
+for path in (SKILL, EVIDENCE, PRACTICE_CATALOG):
     content = path.read_text(encoding="utf-8")
     if re.search(r"\b(?:TODO|TBD)\b|\{\.\.\.\}", content):
         fail(f"semantic placeholder found in {path.relative_to(ROOT)}")
@@ -78,6 +80,7 @@ if record.get("producer_verdict") != "PASS" or record.get("consumer_verdict") !=
 expected_hashes = {
     "skills/audhd-consulting-psychologist/SKILL.md": hashlib.sha256(SKILL.read_bytes()).hexdigest(),
     "skills/audhd-consulting-psychologist/references/evidence-base.md": hashlib.sha256(EVIDENCE.read_bytes()).hexdigest(),
+    "skills/audhd-consulting-psychologist/references/practice-and-training-catalog.md": hashlib.sha256(PRACTICE_CATALOG.read_bytes()).hexdigest(),
 }
 if record.get("artifact_sha256") != expected_hashes:
     fail("acceptance record hashes must match the exact reviewed runtime artifacts")
@@ -109,7 +112,7 @@ if {item.get("id") for item in regressions} != {f"R{i}" for i in range(1, 10)} o
     fail("acceptance record must contain evidence for every regression check")
 
 response_regressions = record.get("response_regression_checks", [])
-expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c", "R10", "R11", "R12", "R13", "R14", "R15"}
+expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c", "R10", "R11", "R12", "R13", "R14", "R15", "R16"}
 if {item.get("id") for item in response_regressions} != expected_response_ids:
     fail("acceptance record must contain every response-level regression fixture")
 for item in response_regressions:
@@ -118,13 +121,26 @@ for item in response_regressions:
     if not item.get("pass_criteria_checked") or not item.get("fail_conditions_absent") or item.get("reviewer") != "independent-producer-agent":
         fail(f"response regression {item.get('id')} lacks independent audit evidence")
 
+catalog_text = PRACTICE_CATALOG.read_text(encoding="utf-8")
+catalog_ids = re.findall(r"^### (P\d{2}) —", catalog_text, flags=re.MULTILINE)
+if catalog_ids != [f"P{i:02d}" for i in range(1, 51)]:
+    fail("practice catalog must contain the ordered exact P01-P50 inventory")
+for record_id in catalog_ids:
+    block_match = re.search(rf"^### {record_id} —.*?(?=^### P\d{{2}} —|^## Applying a record)", catalog_text, flags=re.MULTILINE | re.DOTALL)
+    if not block_match:
+        fail(f"practice record {record_id} is not materialized")
+    block = block_match.group(0)
+    for field in ("Source:", "Population/design:", "Finding:", "Usable approach:", "Limit:"):
+        if field not in block:
+            fail(f"practice record {record_id} lacks {field}")
+
 consumer = record.get("consumer_audit", {})
 required_empty_lists = ("missing_inventory", "missing_dimensions", "answerable_unknowns", "semantic_placeholders", "unsupported_additions", "completion_defects")
 if any(consumer.get(field) != [] for field in required_empty_lists):
     fail("consumer audit must contain empty defect lists")
 if consumer.get("verdict") != "PASS" or consumer.get("reviewer") != "independent-artifact-only-consumer" or len(consumer.get("review_summary", "")) < 100:
     fail("consumer audit must contain a substantive independent PASS verdict")
-for inventory_marker in ("A-Z", "R15", "S44-S54", "fifty-four source-applicability records"):
+for inventory_marker in ("A-Z", "R16", "P01-P50", "S44-S54", "fifty-four source-applicability records"):
     if inventory_marker not in consumer.get("review_summary", ""):
         fail(f"consumer audit review_summary is stale or incomplete: missing {inventory_marker}")
 

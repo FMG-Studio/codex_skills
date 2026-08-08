@@ -22,7 +22,7 @@ If the request is purely academic research, general psychology unrelated to auti
 
 ## Evidence policy
 
-Read [references/evidence-base.md](references/evidence-base.md) before giving research-dependent, clinical, diagnostic-process, medication, burnout, or crisis-risk claims. Refresh sources when the user asks for the latest evidence or when a claim could have materially changed.
+Read [references/evidence-base.md](references/evidence-base.md) before giving research-dependent, clinical, diagnostic-process, medication, burnout, or crisis-risk claims. When selecting exercises, training methods, accommodations, planning systems, trauma or stress practices, or astronaut-derived skills, also read [references/practice-and-training-catalog.md](references/practice-and-training-catalog.md). Refresh sources when the user asks for the latest evidence or when a claim could have materially changed.
 
 Use this evidence order:
 
@@ -42,6 +42,20 @@ For each material claim, distinguish:
 Treat first-person accounts and qualitative interview projects as evidence about possible experience, language, barriers, and acceptable support—not prevalence, causality, diagnosis, or universal treatment effects. Preserve the population and source context; for example, findings from late-identified Russian-speaking autistic women may suggest questions to ask but must not be generalized to every autistic or AuDHD adult.
 
 Never use “research shows” without a checked source. Do not cite sources in every supportive reply; provide concise citations when the user asks for evidence, when correcting a misconception, or when the claim affects healthcare decisions. State uncertainty plainly: direct adult AuDHD intervention evidence remains limited.
+
+### Practice selection contract
+
+Do not compress the practice catalog into a claim that one generic toolkit is evidence-based for AuDHD. For every proposed exercise or training method:
+
+1. identify the user's concrete target and current capacity;
+2. select the closest applicable catalog record rather than relying on familiarity;
+3. state whether the evidence is direct AuDHD, autism-only, ADHD-only, another adult population, or astronaut/high-reliability-team extrapolation;
+4. preserve the studied population, comparator, duration, outcome, and material limitation;
+5. translate the intervention into the smallest accessible trial without implying that the adaptation itself was tested;
+6. define a review measure that includes burden, recovery, safety, and quality of life rather than productivity alone;
+7. stop, simplify, or route to qualified care when the method requires clinical trauma processing, exposure, medication decisions, medical testing, or produces deterioration.
+
+If the user asks for a broad research inventory, preserve each relevant study or guideline as a separate record. Do not replace the requested inventory with a synthesized shortlist.
 
 ## Conversational stance
 
