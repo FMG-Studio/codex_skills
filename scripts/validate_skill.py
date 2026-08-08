@@ -60,7 +60,7 @@ for term in required_skill_terms:
         fail(f"missing behavioral or safety boundary: {term}")
 
 acceptance_text = ACCEPTANCE.read_text(encoding="utf-8")
-for fixture in ("Normal supportive conversation", "Possible overload", "Emotion wheel", "Medication boundary", "Imminent suicide risk", "Incomplete information", "Relationship conflict", "Acute intoxication or medication reaction", "Immediate interpersonal danger", "Possible psychosis or mania", "Credible threat toward another person", "Basic needs failure", "Local lookup unavailable", "Multiple simultaneous risks"):
+for fixture in ("Normal supportive conversation", "Possible overload", "Emotion wheel", "Medication boundary", "Imminent suicide risk", "Incomplete information", "Relationship conflict", "Acute intoxication or medication reaction", "Immediate interpersonal danger", "Possible psychosis or mania", "Credible threat toward another person", "Basic needs failure", "Local lookup unavailable", "Multiple simultaneous risks", "Hidden cost of outward competence", "Unmasking remains contextual and safe", "Early overload signals are not a diagnostic checklist"):
     if fixture not in acceptance_text:
         fail(f"missing acceptance fixture: {fixture}")
 
@@ -82,8 +82,8 @@ expected_hashes = {
 if record.get("artifact_sha256") != expected_hashes:
     fail("acceptance record hashes must match the exact reviewed runtime artifacts")
 cases = record.get("cases", [])
-if len(cases) != 14 or {case.get("id") for case in cases} != set("ABCDEFGHIJKLMN"):
-    fail("acceptance record must contain exactly fixtures A through N")
+if len(cases) != 17 or {case.get("id") for case in cases} != set("ABCDEFGHIJKLMNOPQ"):
+    fail("acceptance record must contain exactly fixtures A through Q")
 if any(case.get("verdict") != "PASS" for case in cases):
     fail("every recorded behavioral fixture must pass")
 for case in cases:
@@ -109,7 +109,7 @@ if {item.get("id") for item in regressions} != {f"R{i}" for i in range(1, 10)} o
     fail("acceptance record must contain evidence for every regression check")
 
 response_regressions = record.get("response_regression_checks", [])
-expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c"}
+expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c", "R10"}
 if {item.get("id") for item in response_regressions} != expected_response_ids:
     fail("acceptance record must contain every response-level regression fixture")
 for item in response_regressions:
@@ -124,10 +124,16 @@ if any(consumer.get(field) != [] for field in required_empty_lists):
     fail("consumer audit must contain empty defect lists")
 if consumer.get("verdict") != "PASS" or consumer.get("reviewer") != "independent-artifact-only-consumer" or len(consumer.get("review_summary", "")) < 100:
     fail("consumer audit must contain a substantive independent PASS verdict")
+for inventory_marker in ("A-Q", "R10", "S15-S22", "twenty-two source-applicability records"):
+    if inventory_marker not in consumer.get("review_summary", ""):
+        fail(f"consumer audit review_summary is stale or incomplete: missing {inventory_marker}")
 
 source_checks = record.get("source_verification", [])
-if len(source_checks) < 10 or any(item.get("status") != "VERIFIED" or not item.get("url") or not item.get("applicability") for item in source_checks):
-    fail("acceptance record must preserve current verification and applicability for core evidence sources")
+expected_source_ids = {f"S{i}" for i in range(1, 23)}
+if len(source_checks) != 22 or {item.get("id") for item in source_checks} != expected_source_ids:
+    fail("acceptance record must contain the exact S1-S22 source inventory")
+if any(item.get("status") != "VERIFIED" or not item.get("url") or not item.get("applicability") for item in source_checks):
+    fail("acceptance record must preserve current verification and applicability for every evidence source")
 
 print("PASS: package structure is valid and required safety clauses are present")
 print("NOTE: this does not validate clinical behavior; review the response-level fixtures separately")
