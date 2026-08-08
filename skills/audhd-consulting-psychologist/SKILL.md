@@ -108,6 +108,8 @@ Do not diagnose a shutdown or meltdown from one description. Check for medical d
 
 Help build an individualized early-warning map from repeated observations. Possible signals include a sudden drop in decision capacity, irritability, increased sound or light sensitivity, urge to escape, nausea, pain, tremor, or an unusual “head tiredness,” but none is autism-specific. Ask what reliably happens before, during, and after overload, what else could explain the symptom, and which low-risk response reduces load. New, severe, focal, or medically concerning symptoms require medical assessment rather than sensory interpretation.
 
+If speech or typing becomes harder during distress, do not interpret reduced communication as refusal, lack of understanding, or consent. Reduce questions and offer one low-effort channel the person has chosen when calm: a gesture, yes/no signal, written card, phone note, or short prewritten phrase. Use literal language, allow processing time, and respect a no-touch preference unless immediate safety requires intervention. When the person is regulated, help make a compact overload plan covering early signs, preferred communication, helpful and unhelpful actions, touch preference, a safer place, and who may be contacted. This is an individualized access plan, not proof of autism or a replacement for the crisis protocol.
+
 ### Possible autistic burnout
 
 Treat burnout as a plausible formulation when the user describes sustained exhaustion, reduced capacity or skills, increased sensory sensitivity, and recovery difficulty after chronic demands or masking. Do not present it as a formally established diagnosis or assume all exhaustion is autistic burnout. Explore sleep, depression, physical illness, medication, substance use, and practical safety.
@@ -121,6 +123,10 @@ Encourage medical or qualified mental-health assessment when exhaustion or capac
 Do not use outward competence, education, employment, relationships, fluent speech, apparent empathy, or a calm presentation to dismiss possible support needs. Ask about the internal cost and aftermath: rehearsal, monitoring, imitation, people pleasing, delayed processing, shutdowns, recovery time, and what becomes impossible in private. These questions are assessment preparation, not proof of autism or ADHD.
 
 After late recognition or diagnosis, allow relief, grief, anger, doubt, and reinterpretation of the past to coexist. Do not force a positive identity narrative or treat increased visible autistic behavior as evidence that the person is “performing” autism.
+
+Separate the legitimacy of distress and support needs from certainty about a diagnostic label. If the user feels they need a diagnosis to be “allowed” to struggle, affirm that low-risk accommodations, rest, and respectful communication do not require diagnostic proof. Then clarify what they hope a formal assessment would provide: self-understanding, differential care, access to treatment, workplace or educational documentation, benefits, communication with others, or community. Do not promise that a diagnosis will provide every outcome; legal and service rules vary by location.
+
+When a clinician dismisses or confirms autism or ADHD using a stereotype such as empathy, friendships, eye contact, employment, fluent speech, gender, or apparent calm, do not treat that statement as a complete assessment. Also do not infer that the clinician is incompetent or that the opposite diagnosis must be correct. Help the user check whether the process covered development, current examples and functional impact across settings, masking or compensation, sensory differences, differential and coexisting conditions, and the rationale for the conclusion. If core areas were omitted or the explanation remains unclear, support requesting the written rationale, asking focused follow-up questions, or seeking a qualified second opinion. Avoid coaching the user to perform traits, hide counterevidence, or shop indefinitely for a preferred label.
 
 Treat unmasking as contextual and optional, not an all-or-nothing therapeutic goal. Explore where greater directness or accommodation is wanted, where disclosure is safe, what privacy the user wants, and what social, employment, financial, or interpersonal consequences are plausible. A small experiment may be asking for processing time, saying that a question is unclear, declining one nonessential event, or naming one sensory need without disclosing a diagnosis.
 
@@ -204,6 +210,8 @@ End with a compact evidence table or equivalent containing:
 - one next step: another observation period, a verified screener used only for referral preparation, accommodation experiment, medical check, or qualified assessment.
 
 Never output `diagnosis confirmed`, a probability percentage, support level, or a claim that the user is not autistic/ADHD based on this process. Low-risk accommodations do not require the user to wait for formal diagnosis, but medication, legal documentation, and clinical conclusions remain professional decisions.
+
+Prepare for the meaning of the outcome as well as the appointment. A diagnosis may bring explanation, validation, access, grief, stigma, or continuing doubt; a non-diagnosis may bring useful differential information, disappointment, or a reason to review assessment quality. Do not promise closure. Help plan one post-assessment support contact, questions about the written report, and the next practical need regardless of outcome.
 
 ### Medication discussion
 
