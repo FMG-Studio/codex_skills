@@ -13,6 +13,8 @@ SKILL = SKILL_DIR / "SKILL.md"
 EVIDENCE = SKILL_DIR / "references" / "evidence-base.md"
 PRACTICE_CATALOG = SKILL_DIR / "references" / "practice-and-training-catalog.md"
 LIVED_EXPERIENCE = SKILL_DIR / "references" / "autistic-lived-experience-patterns.md"
+REDDIT_CATALOG = SKILL_DIR / "references" / "reddit-community-practice-catalog.md"
+REDDIT_READBACK = SKILL_DIR / "references" / "reddit-source-readback.md"
 ACCEPTANCE = ROOT / "tests" / "audhd-consulting-psychologist.acceptance.md"
 RECORD = ROOT / "tests" / "audhd-consulting-psychologist.acceptance-record.json"
 INTERFACE = SKILL_DIR / "agents" / "openai.yaml"
@@ -23,7 +25,7 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-for required in (ROOT / "README.md", SKILL, EVIDENCE, PRACTICE_CATALOG, LIVED_EXPERIENCE, INTERFACE, ACCEPTANCE, RECORD):
+for required in (ROOT / "README.md", SKILL, EVIDENCE, PRACTICE_CATALOG, LIVED_EXPERIENCE, REDDIT_CATALOG, REDDIT_READBACK, INTERFACE, ACCEPTANCE, RECORD):
     if not required.is_file():
         fail(f"missing required file: {required.relative_to(ROOT)}")
     if not required.read_text(encoding="utf-8").strip():
@@ -50,6 +52,8 @@ required_skill_terms = (
     "evidence-base.md",
     "practice-and-training-catalog.md",
     "autistic-lived-experience-patterns.md",
+    "reddit-community-practice-catalog.md",
+    "reddit-source-readback.md",
     "Plutchik",
     "direct adult AuDHD intervention evidence remains limited",
     "credible imminent violence",
@@ -64,11 +68,11 @@ for term in required_skill_terms:
         fail(f"missing behavioral or safety boundary: {term}")
 
 acceptance_text = ACCEPTANCE.read_text(encoding="utf-8")
-for fixture in ("Normal supportive conversation", "Possible overload", "Emotion wheel", "Medication boundary", "Imminent suicide risk", "Incomplete information", "Relationship conflict", "Acute intoxication or medication reaction", "Immediate interpersonal danger", "Possible psychosis or mania", "Credible threat toward another person", "Basic needs failure", "Local lookup unavailable", "Multiple simultaneous risks", "Hidden cost of outward competence", "Unmasking remains contextual and safe", "Early overload signals are not a diagnostic checklist", "Demand avoidance is formulated, not diagnosed", "Autonomy support is not covert control", "Self-assessment is substantive but non-diagnostic", "Screening scores do not collapse the differential", "Diagnostic invalidation is reviewed without reverse-diagnosing", "Reduced communication during overload gets an access plan", "Double empathy is a bounded interaction lens", "Autism and OCD are differentiated by function, not appearance", "Biomedical autism claims are evidence-checked without dismissing symptoms", "Recurrent lived-experience strategies remain experiments"):
+for fixture in ("Normal supportive conversation", "Possible overload", "Emotion wheel", "Medication boundary", "Imminent suicide risk", "Incomplete information", "Relationship conflict", "Acute intoxication or medication reaction", "Immediate interpersonal danger", "Possible psychosis or mania", "Credible threat toward another person", "Basic needs failure", "Local lookup unavailable", "Multiple simultaneous risks", "Hidden cost of outward competence", "Unmasking remains contextual and safe", "Early overload signals are not a diagnostic checklist", "Demand avoidance is formulated, not diagnosed", "Autonomy support is not covert control", "Self-assessment is substantive but non-diagnostic", "Screening scores do not collapse the differential", "Diagnostic invalidation is reviewed without reverse-diagnosing", "Reduced communication during overload gets an access plan", "Double empathy is a bounded interaction lens", "Autism and OCD are differentiated by function, not appearance", "Biomedical autism claims are evidence-checked without dismissing symptoms", "Recurrent lived-experience strategies remain experiments", "Reddit practices remain atomic, bounded, and population-labeled"):
     if fixture not in acceptance_text:
         fail(f"missing acceptance fixture: {fixture}")
 
-for path in (SKILL, EVIDENCE, PRACTICE_CATALOG, LIVED_EXPERIENCE):
+for path in (SKILL, EVIDENCE, PRACTICE_CATALOG, LIVED_EXPERIENCE, REDDIT_CATALOG, REDDIT_READBACK):
     content = path.read_text(encoding="utf-8")
     if re.search(r"\b(?:TODO|TBD)\b|\{\.\.\.\}", content):
         fail(f"semantic placeholder found in {path.relative_to(ROOT)}")
@@ -84,13 +88,15 @@ expected_hashes = {
     "skills/audhd-consulting-psychologist/references/evidence-base.md": hashlib.sha256(EVIDENCE.read_bytes()).hexdigest(),
     "skills/audhd-consulting-psychologist/references/practice-and-training-catalog.md": hashlib.sha256(PRACTICE_CATALOG.read_bytes()).hexdigest(),
     "skills/audhd-consulting-psychologist/references/autistic-lived-experience-patterns.md": hashlib.sha256(LIVED_EXPERIENCE.read_bytes()).hexdigest(),
+    "skills/audhd-consulting-psychologist/references/reddit-community-practice-catalog.md": hashlib.sha256(REDDIT_CATALOG.read_bytes()).hexdigest(),
+    "skills/audhd-consulting-psychologist/references/reddit-source-readback.md": hashlib.sha256(REDDIT_READBACK.read_bytes()).hexdigest(),
 }
 if record.get("artifact_sha256") != expected_hashes:
     fail("acceptance record hashes must match the exact reviewed runtime artifacts")
 cases = record.get("cases", [])
-expected_case_ids = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ") | {"AA"}
-if len(cases) != 27 or {case.get("id") for case in cases} != expected_case_ids:
-    fail("acceptance record must contain exactly fixtures A through Z and AA")
+expected_case_ids = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ") | {"AA", "AB"}
+if len(cases) != 28 or {case.get("id") for case in cases} != expected_case_ids:
+    fail("acceptance record must contain exactly fixtures A through Z, AA, and AB")
 if any(case.get("verdict") != "PASS" for case in cases):
     fail("every recorded behavioral fixture must pass")
 for case in cases:
@@ -116,7 +122,7 @@ if {item.get("id") for item in regressions} != {f"R{i}" for i in range(1, 10)} o
     fail("acceptance record must contain evidence for every regression check")
 
 response_regressions = record.get("response_regression_checks", [])
-expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c", "R10", "R11", "R12", "R13", "R14", "R15", "R16", "R17"}
+expected_response_ids = {"R2", "R3", "R7a", "R7b", "R7c", "R10", "R11", "R12", "R13", "R14", "R15", "R16", "R17", "R18"}
 if {item.get("id") for item in response_regressions} != expected_response_ids:
     fail("acceptance record must contain every response-level regression fixture")
 for item in response_regressions:
@@ -162,20 +168,73 @@ undefined_groups = set(re.findall(r"\bG\d{2}\b", "\n".join(re.findall(r"^- Recur
 if undefined_groups:
     fail(f"lived-experience patterns cite undefined source groups: {sorted(undefined_groups)}")
 
+reddit_text = REDDIT_CATALOG.read_text(encoding="utf-8")
+reddit_ids = re.findall(r"^### (C\d{2}) —", reddit_text, flags=re.MULTILINE)
+if reddit_ids != [f"C{i:02d}" for i in range(1, 65)]:
+    fail("Reddit catalog must contain the ordered exact C01-C64 inventory")
+for record_id in reddit_ids:
+    block_match = re.search(rf"^### {record_id} —.*?(?=^### C\d{{2}} —|^## Thread register)", reddit_text, flags=re.MULTILINE | re.DOTALL)
+    if not block_match:
+        fail(f"Reddit record {record_id} is not materialized")
+    block = block_match.group(0)
+    for field in ("Thread groups:", "Population/context:", "Reported practice:", "Potential use:", "Counter-pattern/limit:", "Evidence class:"):
+        if field not in block:
+            fail(f"Reddit record {record_id} lacks {field}")
+
+thread_ids = re.findall(r"^### (RT\d{2}) —", reddit_text, flags=re.MULTILINE)
+if thread_ids != [f"RT{i:02d}" for i in range(1, 31)]:
+    fail("Reddit catalog must contain the ordered exact RT01-RT30 thread register")
+used_threads = set(re.findall(r"\bRT\d{2}\b", "\n".join(re.findall(r"^- Thread groups: [^\n]+$", reddit_text, flags=re.MULTILINE))))
+if used_threads - set(thread_ids):
+    fail(f"Reddit records cite undefined thread groups: {sorted(used_threads - set(thread_ids))}")
+if set(thread_ids) - used_threads:
+    fail(f"Reddit thread groups are not used by any record: {sorted(set(thread_ids) - used_threads)}")
+
+readback_text = REDDIT_READBACK.read_text(encoding="utf-8")
+readback_ids = re.findall(r"^### (RT\d{2}) —", readback_text, flags=re.MULTILINE)
+if readback_ids != [f"RT{i:02d}" for i in range(1, 31)]:
+    fail("Reddit read-back ledger must contain the ordered exact RT01-RT30 inventory")
+for thread_id in readback_ids:
+    block_match = re.search(rf"^### {thread_id} —.*?(?=^### RT\d{{2}} —|^## Access and inference boundary)", readback_text, flags=re.MULTILINE | re.DOTALL)
+    if not block_match:
+        fail(f"Reddit read-back {thread_id} is not materialized")
+    block = block_match.group(0)
+    for field in ("URL:", "Read-back:", "Counter-signal:"):
+        if field not in block:
+            fail(f"Reddit read-back {thread_id} lacks {field}")
+
+catalog_urls = {}
+for thread_id in thread_ids:
+    block = re.search(rf"^### {thread_id} —.*?(?=^### RT\d{{2}} —|^## Applying one record)", reddit_text, flags=re.MULTILINE | re.DOTALL).group(0)
+    url_match = re.search(r"<((?:https?://)[^>]+)>", block)
+    if not url_match:
+        fail(f"Reddit thread register {thread_id} lacks a URL")
+    catalog_urls[thread_id] = url_match.group(1)
+
+readback_urls = {}
+for thread_id in readback_ids:
+    block = re.search(rf"^### {thread_id} —.*?(?=^### RT\d{{2}} —|^## Access and inference boundary)", readback_text, flags=re.MULTILINE | re.DOTALL).group(0)
+    url_match = re.search(r"^- URL: <((?:https?://)[^>]+)>$", block, flags=re.MULTILINE)
+    if not url_match:
+        fail(f"Reddit read-back {thread_id} lacks an exact URL")
+    readback_urls[thread_id] = url_match.group(1)
+if catalog_urls != readback_urls:
+    fail("Reddit catalog and read-back ledger URLs must match for every RT group")
+
 consumer = record.get("consumer_audit", {})
 required_empty_lists = ("missing_inventory", "missing_dimensions", "answerable_unknowns", "semantic_placeholders", "unsupported_additions", "completion_defects")
 if any(consumer.get(field) != [] for field in required_empty_lists):
     fail("consumer audit must contain empty defect lists")
 if consumer.get("verdict") != "PASS" or consumer.get("reviewer") != "independent-artifact-only-consumer" or len(consumer.get("review_summary", "")) < 100:
     fail("consumer audit must contain a substantive independent PASS verdict")
-for inventory_marker in ("A-AA", "R17", "P01-P50", "L01-L12", "S55-S66", "sixty-six source-applicability records"):
+for inventory_marker in ("A-AB", "R18", "P01-P50", "L01-L12", "C01-C64", "RT01-RT30", "S67-S92", "ninety-two source-applicability records"):
     if inventory_marker not in consumer.get("review_summary", ""):
         fail(f"consumer audit review_summary is stale or incomplete: missing {inventory_marker}")
 
 source_checks = record.get("source_verification", [])
-expected_source_ids = {f"S{i}" for i in range(1, 67)}
-if len(source_checks) != 66 or {item.get("id") for item in source_checks} != expected_source_ids:
-    fail("acceptance record must contain the exact S1-S66 source inventory")
+expected_source_ids = {f"S{i}" for i in range(1, 93)}
+if len(source_checks) != 92 or {item.get("id") for item in source_checks} != expected_source_ids:
+    fail("acceptance record must contain the exact S1-S92 source inventory")
 if any(item.get("status") != "VERIFIED" or not item.get("url") or not item.get("applicability") for item in source_checks):
     fail("acceptance record must preserve current verification and applicability for every evidence source")
 
