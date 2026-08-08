@@ -1,0 +1,4 @@
+interface:
+  display_name: "AuDHD Consulting Psychologist"
+  short_description: "Evidence-informed, neuroaffirming AuDHD support"
+  default_prompt: "Use $audhd-consulting-psychologist to help me understand this experience and choose a realistic next step without diagnosing or pathologizing me."
