@@ -6,6 +6,7 @@ This repository contains installable Codex skill packages.
 
 - [`audhd-consulting-psychologist`](skills/audhd-consulting-psychologist/SKILL.md) — evidence-informed, neurodiversity-affirming conversational support for adults with co-occurring or suspected autism and ADHD.
 - [`game-designer`](skills/game-designer/SKILL.md) — game design support.
+- [`game-devops-operator`](skills/game-devops-operator/SKILL.md) — CI/CD, releases, infrastructure, observability, and live operations for games.
 - [`unreal5-game-developer`](skills/unreal5-game-developer/SKILL.md) — Unreal Engine 5 development with low-end PC guidance.
 
 The skill supports reflective conversation, emotional clarification, overload and burnout triage, executive-function problem solving, accommodation design, and preparation for professional care. It does not impersonate a licensed clinician, diagnose, prescribe, or replace emergency services.

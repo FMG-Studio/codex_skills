@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game DevOps Operator"
+  short_description: "Ship and operate reliable game services"
+  default_prompt: "Use $game-devops-operator to build or review this game's delivery and live-operations path with measurable release, reliability, and recovery evidence."
